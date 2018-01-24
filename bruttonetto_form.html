@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+<style>
+	body {
+		font-family: "FreightSansProK",Tahoma,sans-serif;
+	}
+	#formcontainer {
+		height: 60px;
+		background-color:#91dc5a;
+		font-size: 0.9em;
+		color: white;
+		display: flex;
+	}
+</style>
+
+
+
+</head>
+<body>
+
+
+
+<div class="container" id="formcontainer">
+<form class="form-inline" name="formular">
+	
+<div class="form-group mb-2 mr-sm-2">
+	<!-- 1. Element: Eingabefeld netto fuer Nettoeingabe -->
+  	<label class="sr-only" for="inlineFormInputNetto">Nettobetrag</label>
+  	<input type="text" class="form-control form-control-sm" name="netto" value="" placeholder="Nettobetrag" onChange="berechnen();">
+
+  	<!--  2. Element: Berechnungsbutton -->
+    <input class="btn btn-sm" type="button" VALUE="Gehalt berechnen" onClick="berechnen();">
+</div>
+
+  	<!-- 3. Element: Ausgabefeld brutto fuer Bruttobetrag -->
+  	<label class="sr-only" for="smFormGroupOutput">Brutto </label>
+  	<input type="text" class="form-control form-control-sm mb-2 mr-sm-2" placeholder="Brutto" name="brutto" READONLY onChange="ruecksetzen();">
+  
+	<!-- 4. Element: Ausgabefeld mwst fuer Mehrwertsteuer -->
+	<label class="sr-only" for="smFormGroupOutput">Mwst</label>
+	<input type="text" class="form-control form-control-sm mb-2 mr-sm-2" placeholder="Mwst" name="mwst" READONLY onChange="ruecksetzen();">
+    
+</form>
+</div>
+
+
+<script>
+	// Mehrwertsteuersatz
+  steuersatz   = 0.16;
+  
+  // Variablen
+  var nettobetrag  = 0; // Nettobetrag
+  var bruttobetrag = 0; // Bruttobetrag
+  var steuerbetrag = 0; // Mehrwertsteuer
+    
+  function berechnen()
+  {
+    // Etwas kuerzere Form des Zugriffs  
+    with(window.document.formular) {
+      // Nettobetrag einlesen
+      nettobetrag = netto.value;
+      // Einfache Eingabepruefungen
+      if(nettobetrag == "") {
+	alert("Fehler: Bitte Nettobetrag eingeben!");
+	return false;
+      }
+      else if(isNaN(nettobetrag) == true) {
+	alert("Fehler: Bitte als Nettobetrag einen Zahlenwert eingeben!");
+	return false;
+      }
+      // MWst und Brutto berechnen
+      steuerbetrag = eval(nettobetrag + "*" + steuersatz);
+      bruttobetrag = eval(nettobetrag + "+" + steuerbetrag);
+      // MWSt und Brutto ausgeben
+      brutto.value = bruttobetrag;
+      mwst.value = steuerbetrag;
+    }
+    return true;
+  }
+  
+  function ruecksetzen()
+  {
+    with(window.document.formular) {
+      bruttobetrag = 0;
+      steuerbetrag = 0;
+      if(berechnen() == false) {
+	brutto.value = bruttobetrag;
+	mwst.value = steuerbetrag;
+      }
+    }
+    return true;
+  }
+</script>
+
+</body>
+</html>
+
+
