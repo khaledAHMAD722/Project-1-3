@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Searchbar</title>
+  <link rel="stylesheet" href="">
+</head>
+<body>
+
+            <p class="text-center">
+              <button class="btn" id="search-jobs" title="Search for a job on Codepen">Find a job</button>
+              <div class="container" id="job">
+                <p>Click the button above to get started</p>
+              </div>
+            </p>
+             <h3 class="text-center text-primary">OR</h3><hr>
+             <div style="height:0px;overflow:hidden;">
+                    <input type="file" id="fileInput" name="fileInput" />
+                   </div>
+                    <p class="text-center clear-float">
+                      <a href="#" class="btn btn-primary btn-lg" onclick="chooseFile();">Upload Your CV</a></p>
+                  </div>
+        </form> 
+      </div>
+    </div>
+
+  </div>
+<script>
+  //uploding cv
+$( document ).ready(function() {
+
+});
+
+function chooseFile() {
+  $("#fileInput").click();
+  }
+//searching jobs
+const url = 'http://www.json-generator.com/api/json/get/bPBvtqAWcy?indent=2';//my jsons library
+
+const $searchBtn = $('#search-jobs');//finding jobs
+const $jobContainer = $('#job');
+
+$searchBtn.on('click', getJobs);//searching in library
+//a function for searching jobs
+function getJobs() {
+  $jobContainer.html('<div class="loader"/>');
+  //making random text from json  
+  $.getJSON(url)
+    .done(data => {
+      const jobs = data.jobs;//geting jobs from the object
+      const job = jobs[Math.floor(Math.random() * jobs.length)];//random function
+      const jobHtml = `
+        <h2>
+          <a href="${job.url}" target="_blank">${job.title}</a>
+        </h2>
+        <p>at ${job.company_name}</p>
+        <p>${job.description}</p>
+        <p>
+          <a href="${job.url}"
+             target="_blank"
+             title="Click to learn more about being a ${job.title} at ${job.company_name}"
+             class="btn btn-sm">Go to website
+          </a>
+        </p>
+      `;
+
+      $jobContainer.html(jobHtml);
+      $searchBtn.text('Find another job');//after first press change the name of button 
+  })
+    .fail(() => {
+      $jobContainer.html('<p>A job could not be fetched at this time</p>');//if there is a problem
+    })
+}
+
+  </script>
+</body>
+</html>
